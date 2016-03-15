@@ -1,20 +1,16 @@
 var koa   = require('koa');
-var fs    = require('fs');
 var app   = koa();
 
 //Solução que pensei
 app.use(function* (next) {
-  if(this.path !== '/json') {
+  if(!this.request.is('application/json')) {
     return yield next;
   }
-  this.body = { foo: 'bar' };
+  this.body = { message: 'hi!' };
 });
 
 app.use(function* (next) {
-  if(this.path !== '/stream') {
-    return yield next;
-  }
-  this.body = fs.createReadStream(process.argv[3]);
+  this.body = 'ok';
 });
 
 var port = process.argv[2];
